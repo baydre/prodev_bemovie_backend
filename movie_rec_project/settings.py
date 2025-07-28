@@ -85,15 +85,15 @@ WSGI_APPLICATION = 'movie_rec_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#       'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
+# Parse the DATABASE_URL and configure the DATABASES setting
+import dj_database_url
 
 DATABASE_URL = env('DATABASE_URL')
-# DATABASE_URL=postgres://user:password@host:port/dbname
+
+DATABASES = {
+    'default': dj_database_url.parse(DATABASE_URL)
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
