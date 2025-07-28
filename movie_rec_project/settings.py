@@ -32,8 +32,7 @@ environ.Env.read_env(BASE_DIR / '.env')
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
-
-
+TMDB_API_KEY = env('TMDB_API_KEY')
 
 # Application definition
 
