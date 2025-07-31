@@ -47,6 +47,8 @@ INSTALLED_APPS = [
 
     # Project-Based & Third-Party Apps
     'rest_framework',
+    'drf_spectacular',
+
     'users',
     'movies',
     'favourites',
@@ -168,4 +170,15 @@ CACHES = {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     }
+}
+
+# Swagger OpenAPI Settings
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'ProDev BEMovie Recommendation Backend API',
+    'DESCRIPTION': 'API for retrieving trending/recommended movies, user authentication, and managing user preferences.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False, # Set to False for production
+    # Optional: custom path to your favicon
+    # 'SWAGGER_UI_FAVICON_HREF': '/static/favicon.ico',
 }
