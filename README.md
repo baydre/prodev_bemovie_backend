@@ -1,35 +1,197 @@
 # ProDev BEMovie Recommendation Backend
 
-This project provides a robust backend for a movie recommendation application, focusing on API development, performance optimization with caching, and comprehensive documentation.
+This project provides a robust backend for a movie recommendation application. It covers API development, performance optimization with caching, and comprehensive documentation.
 
 ## Overview
 
-The backend offers APIs for retrieving trending and recommended movies from TMDb, user authentication via JWT, and the ability for users to save their favorite movies. It's designed with modularity, performance, and security in mind.
-
-## Project Goals
-
--   **API Creation:** Develop endpoints for fetching trending and recommended movies.
--   **User Management:** Implement user authentication and the ability to save favorite movies.
--   **Performance Optimization:** Enhance API performance with caching mechanisms.
--   **Comprehensive Documentation:** Use Swagger for API documentation.
+The backend offers APIs for retrieving trending and recommended movies from TMDb, supports user authentication via JWT, and allows users to manage their favorite movies. Designed with modularity, performance, and security in mind, this project delivers a seamless movie discovery experience.
 
 ## Technologies Used
 
--   **Django:** For backend development.
--   **Django REST Framework (DRF):** For building RESTful APIs.
--   **PostgreSQL:** Relational database for data storage.
--   **Redis:** Caching system for performance optimization.
--   **djangorestframework-simplejwt:** For JWT-based user authentication.
--   **drf-spectacular:** For API documentation (Swagger/OpenAPI).
--   **requests:** For interacting with the TMDb API.
--   **python-dotenv:** For managing environment variables.
--   **dj-database-url:** For parsing database URLs in settings.
--   **Docker & Docker Compose:** For containerization and orchestration.
+### Backend Framework
+- **Django 5.2+** - High-level Python web framework for rapid development
+- **Django REST Framework (DRF)** - Powerful toolkit for building Web APIs
+- **Python 3.11+** - Modern Python with improved performance and type hints
+
+### Database & Caching
+- **PostgreSQL** - Advanced open-source relational database
+- **Redis** - In-memory data structure store for caching and session management
+- **django-redis** - Redis cache backend for Django
+
+### Authentication & Security
+- **djangorestframework-simplejwt** - JSON Web Token authentication for DRF
+- **JWT (JSON Web Tokens)** - Secure token-based authentication
+- **Django's built-in security features** - CSRF protection, SQL injection prevention
+
+### API Documentation
+- **drf-spectacular** - OpenAPI 3.0 schema generation for Django REST Framework
+- **Swagger UI** - Interactive API documentation interface
+- **OpenAPI 3.0** - Industry-standard API specification
+
+### External Services
+- **TMDb API** - The Movie Database API for movie data
+- **requests** - HTTP library for API interactions
+
+### Development & Package Management
+- **uv** - Fast Python package installer and resolver
+- **python-dotenv** - Environment variable management
+- **dj-database-url** - Database URL parsing utility
+
+### Testing
+- **Django's testing framework** - Built-in testing capabilities
+- **unittest.mock** - Mock object library for testing
+- **APITestCase** - DRF's test case for API testing
+
+### Deployment & Infrastructure
+- **Docker** - Containerization platform
+- **Docker Compose** - Multi-container Docker applications
+- **Kubernetes** (Optional) - Container orchestration platform
+
+### Code Quality & Standards
+- **PEP 8** - Python style guide compliance
+- **Type hints** - Static type checking support
+- **Modular architecture** - Clean separation of concerns
+
+## Setup Instructions
+
+### Prerequisites
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/getting-started/installation/) - Fast Python package installer
+- Redis server
+- PostgreSQL database
+
+### Installation
+
+1. **Clone the Repository:**
+   ```bash
+   git clone https://github.com/yourusername/prodev_bemovie_backend.git
+   cd prodev_bemovie_backend
+   ```
+
+2. **Install Dependencies with uv:**
+   ```bash
+   uv sync
+   ```
+   This will automatically create a virtual environment and install all dependencies from `pyproject.toml`.
+
+3. **Activate Virtual Environment:**
+   ```bash
+   source .venv/bin/activate
+   ```
+
+4. **Environment Variables:**
+   Create a `.env` file in the project root with the following variables:
+   ```env
+   SECRET_KEY=your-secret-key-here
+   DEBUG=True
+   ALLOWED_HOSTS=localhost,127.0.0.1
+   DATABASE_URL=postgresql://username:password@localhost:5432/dbname
+   TMDB_API_KEY=your-tmdb-api-key
+   ```
+
+5. **Run Migrations:**
+   ```bash
+   python manage.py migrate
+   ```
+
+6. **Create Superuser (Optional):**
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+7. **Start Development Server:**
+   ```bash
+   python manage.py runserver
+   ```
+
+## API Endpoints
+
+- **Auth:**
+  - `POST /api/auth/register/`: Register a new user.
+  - `POST /api/token/`: Obtain JWT token.
+  - `GET /api/auth/profile/`: User profile management.
+
+- **Movies:**
+  - `GET /api/movies/trending/`: Get trending movies.
+  - `GET /api/movies/{id}/`: Get movie details.
+  - `GET /api/movies/{id}/recommendations/`: Get movie recommendations.
+  - `GET /api/movies/search/?q=title`: Search movies by title.
+
+- **Favorites:**
+  - `GET /api/favourites/`: List user favorites.
+  - `POST /api/favourites/`: Add a favorite movie.
+  - `DELETE /api/favourites/{id}/`: Remove a favorite movie.
+
+## Documentation
+
+Interactive API documentation is available via Swagger UI:
+- Visit `/api/docs/` after starting the server to explore and test endpoints.
+
+## Development and Testing
+
+### Running Tests
+
+- **All Tests:**
+  ```bash
+  python manage.py test --settings=movie_rec_project.test_settings
+  ```
+
+- **Specific App Tests:**
+  ```bash
+  python manage.py test users --settings=movie_rec_project.test_settings
+  python manage.py test movies --settings=movie_rec_project.test_settings
+  python manage.py test favourites --settings=movie_rec_project.test_settings
+  ```
+
+- **Integration Tests:**
+  ```bash
+  python manage.py test integration_tests --settings=movie_rec_project.test_settings
+  ```
+
+### Development with uv
+
+- **Add New Dependencies:**
+  ```bash
+  uv add package-name
+  ```
+
+- **Add Development Dependencies:**
+  ```bash
+  uv add --dev package-name
+  ```
+
+- **Update Dependencies:**
+  ```bash
+  uv sync
+  ```
+
+### Features
+- **Comprehensive Test Coverage:** Unit tests, integration tests, and API protection tests
+- **Redis Caching:** Movie data is cached to improve response times
+- **JWT Authentication:** Secure user authentication and authorization
+- **API Documentation:** Interactive Swagger documentation
+
+## Deployment
+
+1. **Docker:**
+   - Containers can be set up using Docker and Docker Compose for consistent environments.
+   - Build with: `docker-compose build`
+   - Run with: `docker-compose up`
+
+2. **Kubernetes:** (Optional)
+   - Prepare Kubernetes configuration for deploying on a cluster.
+
+## Evaluation Criteria
+
+- **Functionality:** Full API coverage with robust error-handling.
+- **Performance:** Optimized queries and caching to enhance response times.
+- **Security:** JWT authentication safeguards APIs and user data.
+- **Documentation:** Clear API documentation and setup guidelines for ease of use.
 
 ## Project Structure
 
 The backend is organized into three Django applications:
 
 -   `users`: Manages user authentication and profiles.
--   `movies_data`: Handles external TMDb API interactions and public movie data.
--   `user_preferences`: Manages user-specific favorite movie data.
+-   `movies`: Handles external TMDb API interactions and public movie data.
+-   `favourites`: Manages user-specific favorite movie data.
