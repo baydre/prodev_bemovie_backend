@@ -1,12 +1,26 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from drf_spectacular.utils import extend_schema, OpenApiExample
 
 # Import TMDbService from movies_data app
 from movies.services import TMDbService
 from .models import FavoriteMovie
 from .serializers import FavoriteMovieSerializer
 
+@extend_schema(
+    tags=['Favorites'],
+    description='Manage user favorite movies. Requires authentication.',
+    examples=[
+        OpenApiExample(
+            'Add favorite movie',
+            summary='Add movie to favorites',
+            description='Add a movie to user\'s favorite list',
+            value={'movie_id': 550},
+            request_only=True,
+        ),
+    ],
+)
 class FavoriteMovieListView(generics.ListCreateAPIView):
     serializer_class = FavoriteMovieSerializer
     permission_classes = [IsAuthenticated]
@@ -39,11 +53,15 @@ class FavoriteMovieListView(generics.ListCreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-class FavoriteMovieDetailView(generics.DestroyAPIView):
+@extend_schema(
+    tags=['Favorites'],
+    description='Retrieve, update, or delete a specific favorite movie. Requires authentication.',
+)
+class FavoriteMovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FavoriteMovie.objects.all()
     serializer_class = FavoriteMovieSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # Ensure users can only delete their own favorite movies
+        # Ensure users can only access their own favorite movies
         return self.request.user.favorite_movies.all()

@@ -38,3 +38,7 @@ class TMDbService:
     @classmethod
     def get_movie_recommendations(cls, movie_id, page=1):
         return cls._make_request(f"movie/{movie_id}/recommendations", {'page': page})
+    
+    @classmethod
+    def search_movies(cls, query, page=1):
+        return cls._make_request("search/movie", {'query': query, 'page': page})

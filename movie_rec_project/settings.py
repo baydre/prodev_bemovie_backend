@@ -179,6 +179,25 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API for retrieving trending/recommended movies, user authentication, and managing user preferences.',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False, # Set to False for production
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    'SECURITY': [{'BearerAuth': []}, {'SessionAuth': []}],
+    'COMPONENTS': {
+        'securitySchemes': {
+            'BearerAuth': {
+                'type': 'http',
+                'scheme': 'bearer',
+                'bearerFormat': 'JWT',
+                'description': 'JWT token authentication. Use format: Bearer <token>'
+            },
+            'SessionAuth': {
+                'type': 'apiKey',
+                'in': 'cookie',
+                'name': 'sessionid',
+                'description': 'Session-based authentication'
+            }
+        }
+    },
     # Optional: custom path to your favicon
     # 'SWAGGER_UI_FAVICON_HREF': '/static/favicon.ico',
 }
