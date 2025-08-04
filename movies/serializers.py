@@ -1,4 +1,7 @@
+from typing import Any, Dict
+
 from rest_framework import serializers
+
 
 class MovieSerializer(serializers.Serializer):
     id = serializers.IntegerField()
@@ -8,11 +11,13 @@ class MovieSerializer(serializers.Serializer):
     release_date = serializers.DateField(allow_null=True, required=False)
     vote_average = serializers.FloatField(allow_null=True, required=False)
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: Dict[str, Any]) -> Dict[str, Any]:
         representation = super().to_representation(instance)
-        if representation.get('poster_path'):
+        if representation.get("poster_path"):
             # TMDb base image URL
-            representation['poster_url'] = f"https://image.tmdb.org/t/p/w500{representation['poster_path']}"
+            representation[
+                "poster_url"
+            ] = f"https://image.tmdb.org/t/p/w500{representation['poster_path']}"
         else:
-            representation['poster_url'] = None
+            representation["poster_url"] = None
         return representation

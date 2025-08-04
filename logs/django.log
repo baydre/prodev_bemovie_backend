@@ -1,0 +1,21 @@
+INFO 2025-08-04 07:24:00,858 autoreload 36912 139696641374016 Watching for file changes with StatReloader
+INFO 2025-08-04 07:25:39,880 autoreload 36912 139696641374016 /home/baydre_africa/alx_se/prodev_bemovie_backend/favourites/urls.py changed, reloading.
+INFO 2025-08-04 07:25:40,729 autoreload 37283 140711938463552 Watching for file changes with StatReloader
+INFO 2025-08-04 07:41:07,782 autoreload 42739 139649151227712 Watching for file changes with StatReloader
+INFO 2025-08-04 07:41:13,677 basehttp 42739 139649071044352 "GET /api/docs/ HTTP/1.1" 200 4674
+INFO 2025-08-04 07:41:14,111 basehttp 42739 139649071044352 "GET /api/schema/ HTTP/1.1" 200 41278
+WARNING 2025-08-04 07:42:53,165 log 42957 139984777103168 Conflict: /api/favourites/
+WARNING 2025-08-04 07:42:53,176 log 42957 139984777103168 Unauthorized: /api/favourites/
+WARNING 2025-08-04 07:42:54,003 log 42957 139984777103168 Bad Request: /api/movies/search/
+WARNING 2025-08-04 07:42:54,019 log 42957 139984777103168 Unauthorized: /api/auth/profile/
+WARNING 2025-08-04 07:42:54,082 log 42957 139984777103168 Bad Request: /api/auth/register/
+WARNING 2025-08-04 07:43:16,866 log 43155 140697301006144 Conflict: /api/favourites/
+WARNING 2025-08-04 07:43:16,882 log 43155 140697301006144 Unauthorized: /api/favourites/
+WARNING 2025-08-04 07:43:17,608 log 43155 140697301006144 Bad Request: /api/movies/search/
+WARNING 2025-08-04 07:43:17,630 log 43155 140697301006144 Unauthorized: /api/auth/profile/
+WARNING 2025-08-04 07:43:17,691 log 43155 140697301006144 Bad Request: /api/auth/register/
+WARNING 2025-08-04 07:43:25,540 log 43342 139753890776896 Conflict: /api/favourites/
+WARNING 2025-08-04 07:43:25,553 log 43342 139753890776896 Unauthorized: /api/favourites/
+WARNING 2025-08-04 07:43:26,308 log 43342 139753890776896 Bad Request: /api/movies/search/
+WARNING 2025-08-04 07:43:26,327 log 43342 139753890776896 Unauthorized: /api/auth/profile/
+WARNING 2025-08-04 07:43:26,382 log 43342 139753890776896 Bad Request: /api/auth/register/

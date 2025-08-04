@@ -1,22 +1,28 @@
-from rest_framework import generics, status, permissions
-from rest_framework.response import Response
+from typing import Any
+
+from django.db.models import QuerySet
+from drf_spectacular.utils import OpenApiExample, extend_schema
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 # Import TMDbService from movies_data app
 from movies.services import TMDbService
+
 from .models import FavoriteMovie
 from .serializers import FavoriteMovieSerializer
 
+
 @extend_schema(
-    tags=['Favorites'],
-    description='Manage user favorite movies. Requires authentication.',
+    tags=["Favorites"],
+    description="Manage user favorite movies. Requires authentication.",
     examples=[
         OpenApiExample(
-            'Add favorite movie',
-            summary='Add movie to favorites',
-            description='Add a movie to user\'s favorite list',
-            value={'movie_id': 550},
+            "Add favorite movie",
+            summary="Add movie to favorites",
+            description="Add a movie to user's favorite list",
+            value={"movie_id": 550},
             request_only=True,
         ),
     ],
@@ -25,43 +31,57 @@ class FavoriteMovieListView(generics.ListCreateAPIView):
     serializer_class = FavoriteMovieSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         # Ensure users can only see their own favorite movies
         return self.request.user.favorite_movies.all()
 
-    def create(self, request, *args, **kwargs):
-        movie_id = request.data.get('movie_id')
+    def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        movie_id = request.data.get("movie_id")
         if not movie_id:
-            return Response({"movie_id": "Movie ID is required."}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"movie_id": "Movie ID is required."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         # Fetch movie details from TMDb to get title and poster_path
         movie_data = TMDbService.get_movie_details(movie_id)
         if not movie_data:
-            return Response({"detail": "Movie not found on TMDb."}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"detail": "Movie not found on TMDb."}, status=status.HTTP_404_NOT_FOUND
+            )
 
         # Check if the movie is already favorited by the user
         if FavoriteMovie.objects.filter(user=request.user, movie_id=movie_id).exists():
-            return Response({"detail": "Movie already in favorites."}, status=status.HTTP_409_CONFLICT)
+            return Response(
+                {"detail": "Movie already in favorites."},
+                status=status.HTTP_409_CONFLICT,
+            )
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save(
             user=request.user,
-            title=movie_data.get('title', 'Unknown Title'),
-            poster_path=movie_data.get('poster_path')
+            title=movie_data.get("title", "Unknown Title"),
+            poster_path=movie_data.get("poster_path"),
         )
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(
+            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+        )
+
 
 @extend_schema(
-    tags=['Favorites'],
-    description='Retrieve, update, or delete a specific favorite movie. Requires authentication.',
+    tags=["Favorites"],
+    description=(
+        "Retrieve, update, or delete a specific favorite movie. "
+        "Requires authentication."
+    ),
 )
 class FavoriteMovieDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = FavoriteMovie.objects.all()
     serializer_class = FavoriteMovieSerializer
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
+    def get_queryset(self) -> QuerySet:
         # Ensure users can only access their own favorite movies
         return self.request.user.favorite_movies.all()
