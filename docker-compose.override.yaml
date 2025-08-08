@@ -1,0 +1,37 @@
+# This file is automatically loaded by docker-compose for development
+# Override production settings with development-friendly configurations
+
+services:
+  web:
+    # Mount source code for development
+    volumes:
+      - .:/app
+      - ./logs:/app/logs
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    
+    environment:
+      # Enable debug mode for development
+      DJANGO_DEBUG: "True"
+      DJANGO_ALLOWED_HOSTS: "*"
+      
+      # Use weaker password for development
+      DJANGO_SUPERUSER_PASSWORD: admin
+      
+    # Override command for development with auto-reload
+    command: >
+      sh -c "uv run python manage.py runserver 0.0.0.0:8000"
+    
+    # Expose additional ports for debugging if needed
+    ports:
+      - "8000:8000"
+
+  # Optional: Add development tools
+  # mailhog:
+  #   image: mailhog/mailhog:latest
+  #   container_name: bemovie_mailhog
+  #   ports:
+  #     - "1025:1025"
+  #     - "8025:8025"
+  #   networks:
+  #     - bemovie_network

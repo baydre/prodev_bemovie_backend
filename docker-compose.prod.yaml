@@ -1,0 +1,118 @@
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    container_name: bemovie_postgres
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: bemovie_db
+      POSTGRES_USER: bemovie_user
+      POSTGRES_PASSWORD: bemovie_password
+    ports:
+      - "5433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bemovie_user -d bemovie_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - bemovie_network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: bemovie_redis
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6380:6379"
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - bemovie_network
+
+  # Django Web Application
+  web:
+    build: .
+    container_name: bemovie_web
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/app/logs
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    environment:
+      # Database configuration
+      DATABASE_URL: postgres://bemovie_user:bemovie_password@db:5432/bemovie_db
+      DATABASE_HOST: db
+      DATABASE_PORT: 5432
+      DATABASE_NAME: bemovie_db
+      DATABASE_USER: bemovie_user
+      DATABASE_PASSWORD: bemovie_password
+      
+      # Redis configuration
+      REDIS_URL: redis://redis:6379/0
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      
+      # Django configuration
+      DJANGO_SETTINGS_MODULE: movie_rec_project.settings
+      DJANGO_SECRET_KEY: your-secret-key-change-this-in-production
+      DJANGO_DEBUG: "False"
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+      
+      # Optional: Create superuser on startup
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@example.com
+      DJANGO_SUPERUSER_PASSWORD: admin123
+      
+      # Additional settings
+      PYTHONPATH: /app
+      UV_CACHE_DIR: /tmp/uv-cache
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - bemovie_network
+
+  # Nginx (Optional - for production)
+  nginx:
+    image: nginx:alpine
+    container_name: bemovie_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      - web
+    networks:
+      - bemovie_network
+    profiles:
+      - production
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  static_volume:
+    driver: local
+  media_volume:
+    driver: local
+
+networks:
+  bemovie_network:
+    driver: bridge
