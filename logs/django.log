@@ -19,3 +19,299 @@ WARNING 2025-08-04 07:43:25,553 log 43342 139753890776896 Unauthorized: /api/fav
 WARNING 2025-08-04 07:43:26,308 log 43342 139753890776896 Bad Request: /api/movies/search/
 WARNING 2025-08-04 07:43:26,327 log 43342 139753890776896 Unauthorized: /api/auth/profile/
 WARNING 2025-08-04 07:43:26,382 log 43342 139753890776896 Bad Request: /api/auth/register/
+INFO 2025-08-07 14:21:33,800 autoreload 31 140567558978432 Watching for file changes with StatReloader
+WARNING 2025-08-07 14:21:45,301 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:21:45,312 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:22:15,547 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:22:15,552 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+INFO 2025-08-07 14:22:15,553 basehttp 31 140567475381952 - Broken pipe from ('127.0.0.1', 41888)
+WARNING 2025-08-07 14:22:45,729 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:22:45,734 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:23:15,945 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:23:15,957 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:23:46,151 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:23:46,162 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:23:47,511 log 31 140567475381952 Not Found: /api/health
+WARNING 2025-08-07 14:23:47,512 basehttp 31 140567475381952 "GET /api/health HTTP/1.1" 404 4555
+WARNING 2025-08-07 14:23:49,054 log 31 140567475381952 Not Found: /favicon.ico
+WARNING 2025-08-07 14:23:49,064 basehttp 31 140567475381952 "GET /favicon.ico HTTP/1.1" 404 3559
+WARNING 2025-08-07 14:24:15,789 log 31 140567475381952 Not Found: /api/trending
+WARNING 2025-08-07 14:24:15,799 basehttp 31 140567475381952 "GET /api/trending HTTP/1.1" 404 4561
+WARNING 2025-08-07 14:24:16,395 log 31 140567457547968 Not Found: /api/health/
+WARNING 2025-08-07 14:24:16,397 basehttp 31 140567457547968 "GET /api/health/ HTTP/1.1" 404 4558
+INFO 2025-08-07 14:24:37,622 basehttp 31 140567475381952 "GET /api/movies/trending HTTP/1.1" 301 0
+ERROR 2025-08-07 14:24:37,959 log 31 140567465940672 Internal Server Error: /api/movies/trending/
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/client/default.py", line 300, in get
+    raise ConnectionInterrupted(connection=client) from e
+django_redis.exceptions.ConnectionInterrupted: Redis ConnectionError: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/movies/views.py", line 19, in get
+    cached_data = cache.get(cache_key)
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 36, in _decorator
+    raise e.__cause__  # noqa: B904
+    ^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/client/default.py", line 298, in get
+    value = client.get(key)
+            ^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/commands/core.py", line 1829, in get
+    return self.execute_command("GET", name, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/client.py", line 623, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/client.py", line 629, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/utils.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/connection.py", line 1530, in get_connection
+    connection.connect()
+  File "/app/.venv/lib/python3.11/site-packages/redis/connection.py", line 379, in connect
+    self.connect_check_health(check_health=True)
+  File "/app/.venv/lib/python3.11/site-packages/redis/connection.py", line 391, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+ERROR 2025-08-07 14:24:37,972 basehttp 31 140567465940672 "GET /api/movies/trending/ HTTP/1.1" 500 149592
+WARNING 2025-08-07 14:24:46,557 log 31 140567457547968 Not Found: /api/health/
+WARNING 2025-08-07 14:24:46,558 basehttp 31 140567457547968 "GET /api/health/ HTTP/1.1" 404 4558
+INFO 2025-08-07 14:24:46,559 basehttp 31 140567457547968 - Broken pipe from ('127.0.0.1', 45358)
+WARNING 2025-08-07 14:25:04,806 log 31 140567465940672 Not Found: /
+WARNING 2025-08-07 14:25:04,813 basehttp 31 140567465940672 "GET / HTTP/1.1" 404 3508
+WARNING 2025-08-07 14:25:16,746 log 31 140567457547968 Not Found: /api/health/
+WARNING 2025-08-07 14:25:16,746 basehttp 31 140567457547968 "GET /api/health/ HTTP/1.1" 404 4558
+INFO 2025-08-07 14:25:23,445 basehttp 31 140567457547968 "GET /api/docs/ HTTP/1.1" 200 4674
+INFO 2025-08-07 14:25:26,017 basehttp 31 140567457547968 "GET /api/schema/ HTTP/1.1" 200 41278
+WARNING 2025-08-07 14:25:46,980 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:25:46,982 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+INFO 2025-08-07 14:25:46,982 basehttp 31 140567475381952 - Broken pipe from ('127.0.0.1', 57686)
+ERROR 2025-08-07 14:26:10,808 log 31 140567457547968 Internal Server Error: /api/movies/trending/
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 29, in _decorator
+    return method(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 99, in _get
+    return self.client.get(key, default=default, version=version, client=client)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/client/default.py", line 300, in get
+    raise ConnectionInterrupted(connection=client) from e
+django_redis.exceptions.ConnectionInterrupted: Redis ConnectionError: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/views/generic/base.py", line 105, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 515, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 475, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 486, in raise_uncaught_exception
+    raise exc
+  File "/app/.venv/lib/python3.11/site-packages/rest_framework/views.py", line 512, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/movies/views.py", line 19, in get
+    cached_data = cache.get(cache_key)
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 92, in get
+    value = self._get(key, default, version, client)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/cache.py", line 36, in _decorator
+    raise e.__cause__  # noqa: B904
+    ^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django_redis/client/default.py", line 298, in get
+    value = client.get(key)
+            ^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/commands/core.py", line 1829, in get
+    return self.execute_command("GET", name, keys=[name])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/client.py", line 623, in execute_command
+    return self._execute_command(*args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/client.py", line 629, in _execute_command
+    conn = self.connection or pool.get_connection()
+                              ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/utils.py", line 191, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/redis/connection.py", line 1530, in get_connection
+    connection.connect()
+  File "/app/.venv/lib/python3.11/site-packages/redis/connection.py", line 379, in connect
+    self.connect_check_health(check_health=True)
+  File "/app/.venv/lib/python3.11/site-packages/redis/connection.py", line 391, in connect_check_health
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 111 connecting to 127.0.0.1:6379. Connection refused.
+ERROR 2025-08-07 14:26:10,812 basehttp 31 140567457547968 "GET /api/movies/trending/ HTTP/1.1" 500 149722
+WARNING 2025-08-07 14:26:14,462 log 31 140567457547968 Not Found: /favicon.ico
+WARNING 2025-08-07 14:26:14,475 basehttp 31 140567457547968 "GET /favicon.ico HTTP/1.1" 404 3559
+WARNING 2025-08-07 14:26:17,241 log 31 140567475381952 Not Found: /api/health/
+WARNING 2025-08-07 14:26:17,255 basehttp 31 140567475381952 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:26:47,498 log 31 140567448106688 Not Found: /api/health/
+WARNING 2025-08-07 14:26:47,498 basehttp 31 140567448106688 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:27:17,779 log 31 140567448106688 Not Found: /api/health/
+WARNING 2025-08-07 14:27:17,782 basehttp 31 140567448106688 "GET /api/health/ HTTP/1.1" 404 4558
+WARNING 2025-08-07 14:27:48,068 log 31 140567448106688 Not Found: /api/health/
+WARNING 2025-08-07 14:27:48,069 basehttp 31 140567448106688 "GET /api/health/ HTTP/1.1" 404 4558
+INFO 2025-08-07 14:27:48,069 basehttp 31 140567448106688 - Broken pipe from ('127.0.0.1', 39332)
+INFO 2025-08-07 14:47:45,576 autoreload 29 140017756306304 Watching for file changes with StatReloader
+INFO 2025-08-07 14:47:56,941 basehttp 29 140017672382144 "GET /api/docs/ HTTP/1.1" 200 4674
+INFO 2025-08-07 14:47:57,490 basehttp 29 140017672382144 "GET /api/schema/ HTTP/1.1" 200 41278
+INFO 2025-08-07 14:48:03,972 basehttp 29 140017672382144 "GET /api/docs/ HTTP/1.1" 200 4674
+INFO 2025-08-07 14:48:04,249 basehttp 29 140017672382144 "GET /api/schema/ HTTP/1.1" 200 41278
+INFO 2025-08-07 14:48:12,149 basehttp 29 140017654548160 "GET /api/health/ HTTP/1.1" 200 115
+ERROR 2025-08-07 14:48:18,757 log 29 140017654548160 Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2025-08-07 14:48:18,761 basehttp 29 140017654548160 "GET / HTTP/1.1" 400 66562
+ERROR 2025-08-07 14:48:19,292 log 29 140017646155456 Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2025-08-07 14:48:19,294 basehttp 29 140017646155456 "GET /favicon.ico HTTP/1.1" 400 66613
+ERROR 2025-08-07 14:48:28,119 log 29 140017646155456 Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2025-08-07 14:48:28,121 basehttp 29 140017646155456 "GET /api/health HTTP/1.1" 400 66672
+ERROR 2025-08-07 14:48:28,429 log 29 140017654548160 Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2025-08-07 14:48:28,431 basehttp 29 140017654548160 "GET /favicon.ico HTTP/1.1" 400 66623
+ERROR 2025-08-07 14:48:37,449 log 29 140017654548160 Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2025-08-07 14:48:37,450 basehttp 29 140017654548160 "GET /api/docs HTTP/1.1" 400 66650
+ERROR 2025-08-07 14:48:37,776 log 29 140017646155456 Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+Traceback (most recent call last):
+  File "/app/.venv/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/middleware/common.py", line 48, in process_request
+    host = request.get_host()
+           ^^^^^^^^^^^^^^^^^^
+  File "/app/.venv/lib/python3.11/site-packages/django/http/request.py", line 202, in get_host
+    raise DisallowedHost(msg)
+django.core.exceptions.DisallowedHost: Invalid HTTP_HOST header: '0.0.0.0:8000'. You may need to add '0.0.0.0' to ALLOWED_HOSTS.
+WARNING 2025-08-07 14:48:37,778 basehttp 29 140017646155456 "GET /favicon.ico HTTP/1.1" 400 66621
+INFO 2025-08-07 14:48:42,288 basehttp 29 140017646155456 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:48:56,286 basehttp 29 140017672382144 "GET /api/health HTTP/1.1" 301 0
+INFO 2025-08-07 14:48:56,299 basehttp 29 140017663989440 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:49:12,368 basehttp 29 140017672382144 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:49:12,873 basehttp 29 140017663989440 "GET /api/docs/ HTTP/1.1" 200 4674
+INFO 2025-08-07 14:49:13,068 basehttp 29 140017663989440 "GET /api/schema/ HTTP/1.1" 200 41278
+INFO 2025-08-07 14:49:42,453 basehttp 29 140017646155456 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:50:12,592 basehttp 29 140017646155456 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:50:16,710 basehttp 29 140017663989440 "GET /api/movies/search/?q=fantastic%20four HTTP/1.1" 200 5490
+INFO 2025-08-07 14:50:42,760 basehttp 29 140017672382144 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:50:50,206 basehttp 29 140017663989440 "GET /api/movies/search/?q=Black%20Panther HTTP/1.1" 200 9835
+INFO 2025-08-07 14:51:12,856 basehttp 29 140017672382144 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:51:24,820 basehttp 29 140017663989440 "GET /api/movies/search/?q=Kill%20a%20monkey HTTP/1.1" 200 57
+INFO 2025-08-07 14:51:43,045 basehttp 29 140017672382144 "GET /api/health/ HTTP/1.1" 200 115
+INFO 2025-08-07 14:55:45,851 autoreload 257468 139749165299520 Watching for file changes with StatReloader
+INFO 2025-08-07 14:56:57,913 autoreload 259146 139716567906112 Watching for file changes with StatReloader
+INFO 2025-08-07 14:57:01,720 basehttp 259146 139716420613888 "GET /api/docs/ HTTP/1.1" 200 4674
+INFO 2025-08-07 14:57:02,133 basehttp 259146 139716420613888 "GET /api/schema/ HTTP/1.1" 200 41278

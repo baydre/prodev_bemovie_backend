@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -23,8 +25,19 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
+
+@require_http_methods(["GET"])
+def health_check(request):
+    """Simple health check endpoint for Docker and monitoring."""
+    return JsonResponse({
+        "status": "healthy",
+        "message": "ProDev BEMovie API is running",
+        "timestamp": request.build_absolute_uri(),
+    })
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("api/health/", health_check, name="health_check"),
     path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
