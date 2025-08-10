@@ -1,11 +1,30 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.core.cache import cache 
+from django.core.cache import cache
+from django.core.cache.backends.base import InvalidCacheBackendError
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
+import logging
 
 from .services import TMDbService
 from .serializers import MovieSerializer
+
+logger = logging.getLogger(__name__)
+
+def safe_cache_get(key):
+    """Safely get data from cache with error handling"""
+    try:
+        return cache.get(key)
+    except Exception as e:
+        logger.warning(f"Cache get failed for key '{key}': {e}")
+        return None
+
+def safe_cache_set(key, value, timeout):
+    """Safely set data in cache with error handling"""
+    try:
+        cache.set(key, value, timeout)
+    except Exception as e:
+        logger.warning(f"Cache set failed for key '{key}': {e}")
 
 class TrendingMoviesView(APIView):
     @extend_schema(
@@ -14,7 +33,7 @@ class TrendingMoviesView(APIView):
     )
     def get(self, request):
         cache_key = 'trending_movies'
-        cached_data = cache.get(cache_key)
+        cached_data = safe_cache_get(cache_key)
 
         if cached_data:
             return Response(cached_data, status=status.HTTP_200_OK)
@@ -23,7 +42,7 @@ class TrendingMoviesView(APIView):
         if data and 'results' in data:
             serializer = MovieSerializer(data['results'], many=True)
             # Cache for 15 minutes (900 seconds)
-            cache.set(cache_key, serializer.data, 900)
+            safe_cache_set(cache_key, serializer.data, 900)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"detail": "Could not retrieve trending movies."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -34,7 +53,7 @@ class MovieDetailView(APIView):
     )
     def get(self, request, movie_id):
         cache_key = f'movie_detail_{movie_id}'
-        cached_data = cache.get(cache_key)
+        cached_data = safe_cache_get(cache_key)
 
         if cached_data:
             return Response(cached_data, status=status.HTTP_200_OK)
@@ -42,7 +61,7 @@ class MovieDetailView(APIView):
         data = TMDbService.get_movie_details(movie_id)
         if data:
             serializer = MovieSerializer(data)
-            cache.set(cache_key, serializer.data, 3600) # Cache for 1 hour
+            safe_cache_set(cache_key, serializer.data, 3600) # Cache for 1 hour
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"detail": "Movie not found or could not retrieve details."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -53,7 +72,7 @@ class MovieRecommendationsView(APIView):
     )
     def get(self, request, movie_id):
         cache_key = f'movie_recommendations_{movie_id}'
-        cached_data = cache.get(cache_key)
+        cached_data = safe_cache_get(cache_key)
 
         if cached_data:
             return Response(cached_data, status=status.HTTP_200_OK)
@@ -61,7 +80,7 @@ class MovieRecommendationsView(APIView):
         data = TMDbService.get_movie_recommendations(movie_id)
         if data and 'results' in data:
             serializer = MovieSerializer(data['results'], many=True)
-            cache.set(cache_key, serializer.data, 900) # Cache for 15 minutes
+            safe_cache_set(cache_key, serializer.data, 900) # Cache for 15 minutes
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response({"detail": "Could not retrieve recommendations for this movie."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -94,7 +113,7 @@ class MovieSearchView(APIView):
             return Response({"detail": "Search query parameter 'q' is required."}, status=status.HTTP_400_BAD_REQUEST)
         
         cache_key = f'movie_search_{query}_{page}'
-        cached_data = cache.get(cache_key)
+        cached_data = safe_cache_get(cache_key)
         
         if cached_data:
             return Response(cached_data, status=status.HTTP_200_OK)
@@ -108,6 +127,6 @@ class MovieSearchView(APIView):
                 'total_pages': data.get('total_pages', 0),
                 'page': data.get('page', page)
             }
-            cache.set(cache_key, response_data, 600) # Cache for 10 minutes
+            safe_cache_set(cache_key, response_data, 600) # Cache for 10 minutes
             return Response(response_data, status=status.HTTP_200_OK)
         return Response({"detail": "Could not perform search."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
