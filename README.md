@@ -171,15 +171,62 @@ Interactive API documentation is available via Swagger UI:
 - **JWT Authentication:** Secure user authentication and authorization
 - **API Documentation:** Interactive Swagger documentation
 
-## Deployment
+## Docker Deployment
 
-1. **Docker:**
-   - Containers can be set up using Docker and Docker Compose for consistent environments.
-   - Build with: `docker-compose build`
-   - Run with: `docker-compose up`
+### Local Development with Docker
 
-2. **Kubernetes:** (Optional)
-   - Prepare Kubernetes configuration for deploying on a cluster.
+1. **Prerequisites:**
+   - Docker and Docker Compose installed
+   - Clone the repository
+
+2. **Build and Run:**
+   ```bash
+   # Build the Docker image
+   docker-compose build
+   
+   # Start all services (PostgreSQL, Redis, Django)
+   docker-compose up
+   ```
+
+   This will start:
+   - PostgreSQL database on port 5432
+   - Redis cache on port 6379
+   - Django application on port 8000
+
+3. **Access the Application:**
+   - API: http://localhost:8000/api/
+   - Admin: http://localhost:8000/admin/
+   - API Documentation: http://localhost:8000/api/docs/
+
+### Production Deployment
+
+#### Render.com Deployment
+
+1. **Quick Deploy:**
+   - Fork this repository
+   - Connect your GitHub account to Render
+   - Use the included `render.yaml` for automatic setup
+
+2. **Manual Setup:**
+   - Create a new web service on Render
+   - Connect your GitHub repository
+   - Set environment to "Docker"
+   - Configure environment variables:
+     ```
+     SECRET_KEY=<generate-random-secret>
+     DEBUG=False
+     ALLOWED_HOSTS=your-app-name.onrender.com
+     DATABASE_URL=<render-postgres-url>
+     REDIS_URL=<render-redis-url>
+     TMDB_API_KEY=<your-tmdb-api-key>
+     ```
+   - Deploy!
+
+#### Other Platforms
+
+- **Heroku:** Use the Dockerfile for container deployment
+- **DigitalOcean App Platform:** Docker-based deployment supported
+- **AWS/GCP/Azure:** Use container services with the provided Docker configuration
 
 ## Evaluation Criteria
 

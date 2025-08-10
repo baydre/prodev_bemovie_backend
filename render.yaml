@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: prodev-bemovie-backend
+    env: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: false
+      - key: ALLOWED_HOSTS
+        value: prodev-bemovie-backend.onrender.com,localhost,127.0.0.1
+      - key: DATABASE_URL
+        fromDatabase:
+          name: prodev-bemovie-postgres
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: prodev-bemovie-redis
+          property: connectionString
+      - key: TMDB_API_KEY
+        value: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyNWJmMjRkYjdhYWI0ZWNjZjI1ODZkMzc2YWEzMDc5NiIsIm5iZiI6MTc1MzU1NDc2Ni40MDcsInN1YiI6IjY4ODUxZjRlMDk2ZTBlZDNmYjcyZTk2OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ss5sROxukHUIKBStjCVuAP8Oxh9FAm-no2uNezO3bAQ
+
+databases:
+  - name: prodev-bemovie-postgres
+    databaseName: movierec_db
+    user: admin_movierec
+    plan: starter
+
+services:
+  - type: redis
+    name: prodev-bemovie-redis
+    plan: starter

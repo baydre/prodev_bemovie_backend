@@ -17,4 +17,5 @@ dependencies = [
     "redis>=6.2.0",
     "requests>=2.32.4",
     "rest-framework-simplejwt>=0.0.2",
+    "gunicorn>=21.2.0",
 ]
